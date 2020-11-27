@@ -1,7 +1,7 @@
 ![logo](https://hackernoon.com/images/3Ur17PtJhkV5UkAAJFu6z8t0fKg1-eh2032xi.jpeg)
 
 ## A demo application with async/await in Golang
-async/await is an extremely popular feature of a language.
+async/await is an extremely popular feature of modern languages like C#, Python, Javascript.
 It simplifies the asynchronous method execution structure and, it reads like synchronous code.
 So much easier to follow for developers.
 
