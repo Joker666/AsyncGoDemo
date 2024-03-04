@@ -3,33 +3,32 @@ package async
 import "context"
 
 // Future interface has the method signature for await
-type Future interface {
-	Await() interface{}
+type Future[K any] interface {
+	Await() K
+}
+type future[K any] struct {
+	await func(ctx context.Context) K
 }
 
-type future struct {
-	await func(ctx context.Context) interface{}
-}
-
-func (f future) Await() interface{} {
+func (f future[K]) Await() K {
 	return f.await(context.Background())
 }
 
 // Exec executes the async function
-func Exec(f func() interface{}) Future {
-	var result interface{}
-	c := make(chan struct{})
+func Exec[K any, F func() K](f F) Future[K] {
+	var r interface{}
+	ch := make(chan struct{})
 	go func() {
-		defer close(c)
-		result = f()
+		defer close(ch)
+		r = f()
 	}()
-	return future{
-		await: func(ctx context.Context) interface{} {
+	return future[K]{
+		await: func(ctx context.Context) K {
 			select {
+			case <-ch:
+				return r.(K)
 			case <-ctx.Done():
-				return ctx.Err()
-			case <-c:
-				return result
+				return r.(K)
 			}
 		},
 	}
