@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Joker666/AsyncGoDemo/async"
+	"main/async"
 	"time"
 )
 
@@ -15,9 +15,7 @@ func DoneAsync() int {
 
 func main() {
 	fmt.Println("Let's start ...")
-	future := async.Exec(func() interface{} {
-		return DoneAsync()
-	})
+	future := async.Exec(DoneAsync)
 	fmt.Println("Done is running ...")
 	val := future.Await()
 	fmt.Println(val)
